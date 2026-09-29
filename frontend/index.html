@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Student Registration System</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f6fb;
+    color: #222;
+}
+
+.hidden {
+    display: none !important;
+}
+
+button,
+input {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ================= LOGIN / REGISTER ================= */
+
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #eef3fb, #dfe6f3);
+}
+
+.auth-card {
+    width: 400px;
+    max-width: 100%;
+    background: white;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.auth-card h1 {
+    text-align: center;
+    color: #4169d8;
+    margin-bottom: 8px;
+    font-size: 26px;
+}
+
+.auth-card .subtitle {
+    text-align: center;
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #d5d9e0;
+    border-radius: 5px;
+    outline: none;
+}
+
+.form-group input:focus {
+    border-color: #4169d8;
+}
+
+.primary-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    background: #4169d8;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.primary-btn:hover {
+    background: #3158c4;
+}
+
+.switch-text {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 14px;
+    color: #555;
+}
+
+.link-btn {
+    border: none;
+    background: none;
+    color: #4169d8;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.message {
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.error {
+    color: #b00020;
+    background: #ffecec;
+}
+
+.success {
+    color: #087f35;
+    background: #eafff0;
+}
+
+/* ================= STUDENT PAGE ================= */
+
+.student-page {
+    min-height: 100vh;
+}
+
+/* HEADER */
+
+.header {
+    background: #4169d8;
+    color: white;
+    padding: 18px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h1 {
+    font-size: 22px;
+}
+
+.logout-btn {
+    border: none;
+    background: white;
+    color: #4169d8;
+    padding: 9px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.logout-btn:hover {
+    background: #f0f0f0;
+}
+
+/* MAIN CONTENT */
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 30px;
+}
+
+.page-title {
+    font-size: 25px;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+/* CARDS */
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+    margin-bottom: 25px;
+}
+
+.card h2 {
+    color: #4169d8;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+/* REGISTER FORM */
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+/* TABLE */
+
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+
+th,
+td {
+    padding: 13px 10px;
+    border-bottom: 1px solid #e5e5e5;
+    text-align: left;
+}
+
+th {
+    background: #4169d8;
+    color: white;
+    font-size: 14px;
+}
+
+td {
+    font-size: 14px;
+}
+
+tr:hover td {
+    background: #f8f9fc;
+}
+
+/* ACTION BUTTONS */
+
+.edit-btn {
+    background: #f0a000;
+    color: white;
+    border: none;
+    padding: 7px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.edit-btn:hover {
+    background: #d98e00;
+}
+
+.delete-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 7px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background: #bd2130;
+}
+
+.cancel-btn {
+    background: #777;
+    color: white;
+    border: none;
+    padding: 11px 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.cancel-btn:hover {
+    background: #555;
+}
+
+/* EMPTY TABLE */
+
+.empty-message {
+    text-align: center;
+    color: #777;
+    padding: 25px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 700px) {
+
+    .header {
+        padding: 15px;
+    }
+
+    .header h1 {
+        font-size: 17px;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        padding: 18px;
+    }
+
+    .page-title {
+        font-size: 21px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     LOGIN PAGE
+===================================================== -->
+
+<section id="loginPage" class="auth-page">
+
+    <div class="auth-card">
+
+        <h1>Student Login</h1>
+
+        <p class="subtitle">
+            Student Registration System
+        </p>
+
+        <div id="loginMessage"></div>
+
+        <form id="loginForm">
+
+            <div class="form-group">
+
+                <label for="loginEmail">
+                    Email Address
+                </label>
+
+                <input
+                    type="email"
+                    id="loginEmail"
+                    placeholder="Enter your email"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="loginPassword">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="loginPassword"
+                    placeholder="Enter your password"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="primary-btn"
+            >
+                Login
+            </button>
+
+        </form>
+
+
+        <div class="switch-text">
+
+            Don't have an account?
+
+            <button
+                type="button"
+                class="link-btn"
+                onclick="showRegister()"
+            >
+                Register here
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     REGISTRATION PAGE
+===================================================== -->
+
+<section id="registerPage" class="auth-page hidden">
+
+    <div class="auth-card">
+
+        <h1>Student Registration</h1>
+
+        <p class="subtitle">
+            Create your student account
+        </p>
+
+        <div id="registerMessage"></div>
+
+        <form id="registerForm">
+
+            <div class="form-group">
+
+                <label for="fullName">
+                    Full Name
+                </label>
+
+                <input
+                    type="text"
+                    id="fullName"
+                    placeholder="Enter full name"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="registerEmail">
+                    Email Address
+                </label>
+
+                <input
+                    type="email"
+                    id="registerEmail"
+                    placeholder="Enter email"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="phone">
+                    Phone Number
+                </label>
+
+                <input
+                    type="tel"
+                    id="phone"
+                    placeholder="Enter phone number"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="registerPassword">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="registerPassword"
+                    placeholder="Minimum 6 characters"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="confirmPassword">
+                    Confirm Password
+                </label>
+
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    placeholder="Confirm password"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="primary-btn"
+            >
+                Register Student
+            </button>
+
+        </form>
+
+
+        <div class="switch-text">
+
+            Already have an account?
+
+            <button
+                type="button"
+                class="link-btn"
+                onclick="showLogin()"
+            >
+                Login here
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     REGISTERED STUDENT DETAILS PAGE
+===================================================== -->
+
+<section id="studentPage" class="student-page hidden">
+
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <h1>
+            Student Registration System
+        </h1>
+
+        <button
+            class="logout-btn"
+            onclick="logout()"
+        >
+            Logout
+        </button>
+
+    </header>
+
+
+    <!-- CONTENT -->
+
+    <main class="container">
+
+
+        <h2 class="page-title">
+            Registered Student Details
+        </h2>
+
+
+        <!-- REGISTER STUDENT -->
+
+        <div class="card">
+
+            <h2>
+                Register New Student
+            </h2>
+
+            <div id="studentMessage"></div>
+
+            <form id="studentForm">
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="studentName">
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="studentName"
+                            placeholder="Enter full name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="studentEmail">
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="studentEmail"
+                            placeholder="Enter email"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="studentPhone">
+                            Phone Number
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="studentPhone"
+                            placeholder="Enter phone number"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="studentPassword">
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="studentPassword"
+                            placeholder="Minimum 6 characters"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="studentConfirmPassword">
+                        Confirm Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="studentConfirmPassword"
+                        placeholder="Confirm password"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+                    Register Student
+                </button>
+
+            </form>
+
+        </div>
+
+
+
+        <!-- EDIT STUDENT -->
+
+        <div
+            id="editSection"
+            class="card hidden"
+        >
+
+            <h2>
+                Edit Student Details
+            </h2>
+
+            <form id="editForm">
+
+
+                <div class="form-group">
+
+                    <label for="editName">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editName"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="editEmail">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="editEmail"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="editPhone">
+                        Phone Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="editPhone"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+                    Update Student
+                </button>
+
+
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    onclick="cancelEdit()"
+                >
+                    Cancel
+                </button>
+
+            </form>
+
+        </div>
+
+
+
+        <!-- REGISTERED STUDENTS TABLE -->
+
+        <div class="card">
+
+            <h2>
+                Registered Students
+            </h2>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+
+                            <th>Full Name</th>
+
+                            <th>Email</th>
+
+                            <th>Phone</th>
+
+                            <th>Actions</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="studentTableBody">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+    </main>
+
+</section>
+
+
+
+<script>
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let currentStudent = null;
+
+let editingStudentId = null;
+
+
+/* =====================================================
+   SHOW LOGIN
+===================================================== */
+
+function showLogin() {
+
+    document
+        .getElementById("loginPage")
+        .classList.remove("hidden");
+
+    document
+        .getElementById("registerPage")
+        .classList.add("hidden");
+
+    document
+        .getElementById("studentPage")
+        .classList.add("hidden");
+
+}
+
+
+/* =====================================================
+   SHOW REGISTER
+===================================================== */
+
+function showRegister() {
+
+    document
+        .getElementById("loginPage")
+        .classList.add("hidden");
+
+    document
+        .getElementById("registerPage")
+        .classList.remove("hidden");
+
+    document
+        .getElementById("studentPage")
+        .classList.add("hidden");
+
+}
+
+
+/* =====================================================
+   SHOW STUDENT DETAILS
+===================================================== */
+
+function showStudentPage() {
+
+    document
+        .getElementById("loginPage")
+        .classList.add("hidden");
+
+    document
+        .getElementById("registerPage")
+        .classList.add("hidden");
+
+    document
+        .getElementById("studentPage")
+        .classList.remove("hidden");
+
+    loadStudents();
+
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+function showMessage(
+    elementId,
+    message,
+    type
+) {
+
+    document
+        .getElementById(elementId)
+        .innerHTML =
+        `<div class="message ${type}">
+            ${message}
+        </div>`;
+
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+document
+    .getElementById("loginForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const email =
+                document
+                    .getElementById("loginEmail")
+                    .value;
+
+            const password =
+                document
+                    .getElementById("loginPassword")
+                    .value;
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/login",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify({
+                                    email,
+                                    password
+                                })
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (response.ok) {
+
+                    currentStudent =
+                        result.student;
+
+                    showStudentPage();
+
+                } else {
+
+                    showMessage(
+                        "loginMessage",
+                        result.message,
+                        "error"
+                    );
+
+                }
+
+            } catch (error) {
+
+                showMessage(
+                    "loginMessage",
+                    "Unable to connect to server.",
+                    "error"
+                );
+
+            }
+
+        }
+    );
+
+
+/* =====================================================
+   REGISTER FROM REGISTER PAGE
+===================================================== */
+
+document
+    .getElementById("registerForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const fullName =
+                document
+                    .getElementById("fullName")
+                    .value;
+
+            const email =
+                document
+                    .getElementById("registerEmail")
+                    .value;
+
+            const phone =
+                document
+                    .getElementById("phone")
+                    .value;
+
+            const password =
+                document
+                    .getElementById("registerPassword")
+                    .value;
+
+            const confirmPassword =
+                document
+                    .getElementById("confirmPassword")
+                    .value;
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/register",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify({
+                                    fullName,
+                                    email,
+                                    phone,
+                                    password,
+                                    confirmPassword
+                                })
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (response.ok) {
+
+                    showMessage(
+                        "registerMessage",
+                        "Student registered successfully. Please login.",
+                        "success"
+                    );
+
+
+                    document
+                        .getElementById("registerForm")
+                        .reset();
+
+
+                    setTimeout(
+                        showLogin,
+                        1200
+                    );
+
+                } else {
+
+                    showMessage(
+                        "registerMessage",
+                        result.message,
+                        "error"
+                    );
+
+                }
+
+            } catch (error) {
+
+                showMessage(
+                    "registerMessage",
+                    "Unable to connect to server.",
+                    "error"
+                );
+
+            }
+
+        }
+    );
+
+
+/* =====================================================
+   REGISTER NEW STUDENT
+===================================================== */
+
+document
+    .getElementById("studentForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const fullName =
+                document
+                    .getElementById("studentName")
+                    .value;
+
+            const email =
+                document
+                    .getElementById("studentEmail")
+                    .value;
+
+            const phone =
+                document
+                    .getElementById("studentPhone")
+                    .value;
+
+            const password =
+                document
+                    .getElementById("studentPassword")
+                    .value;
+
+            const confirmPassword =
+                document
+                    .getElementById("studentConfirmPassword")
+                    .value;
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/register",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify({
+                                    fullName,
+                                    email,
+                                    phone,
+                                    password,
+                                    confirmPassword
+                                })
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (response.ok) {
+
+                    showMessage(
+                        "studentMessage",
+                        "Student registered successfully.",
+                        "success"
+                    );
+
+
+                    document
+                        .getElementById("studentForm")
+                        .reset();
+
+
+                    loadStudents();
+
+                } else {
+
+                    showMessage(
+                        "studentMessage",
+                        result.message,
+                        "error"
+                    );
+
+                }
+
+            } catch (error) {
+
+                showMessage(
+                    "studentMessage",
+                    "Unable to connect to server.",
+                    "error"
+                );
+
+            }
+
+        }
+    );
+
+
+/* =====================================================
+   LOAD STUDENTS
+===================================================== */
+
+async function loadStudents() {
+
+    try {
+
+        const response =
+            await fetch("/api/students");
+
+        const students =
+            await response.json();
+
+
+        const tableBody =
+            document
+                .getElementById(
+                    "studentTableBody"
+                );
+
+
+        tableBody.innerHTML = "";
+
+
+        if (
+            !Array.isArray(students) ||
+            students.length === 0
+        ) {
+
+            tableBody.innerHTML = `
+                <tr>
+                    <td
+                        colspan="5"
+                        class="empty-message"
+                    >
+                        No students registered.
+                    </td>
+                </tr>
+            `;
+
+            return;
+
+        }
+
+
+        students.forEach(
+            function(student) {
+
+                const row =
+                    document.createElement("tr");
+
+
+                row.innerHTML = `
+
+                    <td>
+                        ${student.id}
+                    </td>
+
+                    <td>
+                        ${student.fullName}
+                    </td>
+
+                    <td>
+                        ${student.email}
+                    </td>
+
+                    <td>
+                        ${student.phone}
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="edit-btn"
+                            onclick="editStudent(${student.id})"
+                        >
+                            Edit
+                        </button>
+
+                        <button
+                            class="delete-btn"
+                            onclick="deleteStudent(${student.id})"
+                        >
+                            Delete
+                        </button>
+
+                    </td>
+
+                `;
+
+
+                tableBody.appendChild(row);
+
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Error loading students:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   EDIT STUDENT
+===================================================== */
+
+async function editStudent(id) {
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/students/${id}`
+            );
+
+
+        const student =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            alert(student.message);
+
+            return;
+
+        }
+
+
+        editingStudentId = id;
+
+
+        document
+            .getElementById("editName")
+            .value =
+            student.fullName;
+
+
+        document
+            .getElementById("editEmail")
+            .value =
+            student.email;
+
+
+        document
+            .getElementById("editPhone")
+            .value =
+            student.phone;
+
+
+        document
+            .getElementById("editSection")
+            .classList.remove("hidden");
+
+
+        document
+            .getElementById("editSection")
+            .scrollIntoView({
+                behavior: "smooth"
+            });
+
+    } catch (error) {
+
+        alert(
+            "Unable to load student details."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   UPDATE STUDENT
+===================================================== */
+
+document
+    .getElementById("editForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const fullName =
+                document
+                    .getElementById("editName")
+                    .value;
+
+            const email =
+                document
+                    .getElementById("editEmail")
+                    .value;
+
+            const phone =
+                document
+                    .getElementById("editPhone")
+                    .value;
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `/api/students/${editingStudentId}`,
+                        {
+                            method: "PUT",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify({
+                                    fullName,
+                                    email,
+                                    phone
+                                })
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (response.ok) {
+
+                    alert(
+                        "Student updated successfully."
+                    );
+
+
+                    cancelEdit();
+
+                    loadStudents();
+
+                } else {
+
+                    alert(
+                        result.message
+                    );
+
+                }
+
+            } catch (error) {
+
+                alert(
+                    "Unable to update student."
+                );
+
+            }
+
+        }
+    );
+
+
+/* =====================================================
+   CANCEL EDIT
+===================================================== */
+
+function cancelEdit() {
+
+    editingStudentId = null;
+
+
+    document
+        .getElementById("editSection")
+        .classList.add("hidden");
+
+
+    document
+        .getElementById("editForm")
+        .reset();
+
+}
+
+
+/* =====================================================
+   DELETE STUDENT
+===================================================== */
+
+async function deleteStudent(id) {
+
+    const answer =
+        confirm(
+            "Are you sure you want to delete this student?"
+        );
+
+
+    if (!answer) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/students/${id}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (response.ok) {
+
+            alert(
+                "Student deleted successfully."
+            );
+
+            loadStudents();
+
+        } else {
+
+            alert(
+                result.message
+            );
+
+        }
+
+    } catch (error) {
+
+        alert(
+            "Unable to delete student."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+function logout() {
+
+    currentStudent = null;
+
+    editingStudentId = null;
+
+
+    document
+        .getElementById("loginForm")
+        .reset();
+
+
+    showLogin();
+
+}
+
+</script>
+
+</body>
+</html>
